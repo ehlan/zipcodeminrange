@@ -74,7 +74,7 @@ public class ZipRangeProcessor {
                 // add newInput range
                 zipRangeListIterator.add(zipRangeInput);
             } else if (zipRangeInput.getBegZip() < currentZipRange.getBegZip() &&
-                    zipRangeInput.getEndZip() < currentZipRange.getEndZip()){
+                    zipRangeInput.getEndZip() <= currentZipRange.getEndZip()){
                 // Case 3, new range extends beginning range of current range
                 // modify input range to incorporate end zip code with current
                 zipRangeInput.setEndZip(currentZipRange.getEndZip());
@@ -82,7 +82,7 @@ public class ZipRangeProcessor {
                 zipRangeListIterator.remove();
                 // add newInput range to be added to replace the removed range
                 zipRangeListIterator.add(zipRangeInput);
-            } else if (zipRangeInput.getBegZip() > currentZipRange.getBegZip() &&
+            } else if (zipRangeInput.getBegZip() >= currentZipRange.getBegZip() &&
                     zipRangeInput.getEndZip() > currentZipRange.getEndZip()){
                 // Case 4, new range extends ending range of current range
                 // modify input range to incorporate end zip code with current

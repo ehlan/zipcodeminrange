@@ -100,10 +100,32 @@ public class ZipRangeProcessorTest {
     }
 
     @Test
+    public void TestOptimizeZipCodeRangeInputLeftRangeEqualEnd(){
+        List<ZipRange> zipRangeInput = new ArrayList<>();
+        zipRangeInput.add(new ZipRange(94001, 95001));
+        ZipRange inputRange = new ZipRange(93001, 95001);
+        zipRangeProcessor.optimizeZipCodeRange(zipRangeInput,inputRange);
+        assertEquals(zipRangeInput.size(), 1);
+        assertEquals(zipRangeInput.get(0).getBegZip(), Integer.valueOf(93001));
+        assertEquals(zipRangeInput.get(0).getEndZip(), Integer.valueOf(95001));
+    }
+
+    @Test
     public void TestOptimizeZipCodeRangeInputRightRange(){
         List<ZipRange> zipRangeInput = new ArrayList<>();
         zipRangeInput.add(new ZipRange(94001, 95001));
         ZipRange inputRange = new ZipRange(94999, 96001);
+        zipRangeProcessor.optimizeZipCodeRange(zipRangeInput,inputRange);
+        assertEquals(zipRangeInput.size(), 1);
+        assertEquals(zipRangeInput.get(0).getBegZip(), Integer.valueOf(94001));
+        assertEquals(zipRangeInput.get(0).getEndZip(), Integer.valueOf(96001));
+    }
+
+    @Test
+    public void TestOptimizeZipCodeRangeInputRightRangeEqualBeg(){
+        List<ZipRange> zipRangeInput = new ArrayList<>();
+        zipRangeInput.add(new ZipRange(94001, 95001));
+        ZipRange inputRange = new ZipRange(94001, 96001);
         zipRangeProcessor.optimizeZipCodeRange(zipRangeInput,inputRange);
         assertEquals(zipRangeInput.size(), 1);
         assertEquals(zipRangeInput.get(0).getBegZip(), Integer.valueOf(94001));
