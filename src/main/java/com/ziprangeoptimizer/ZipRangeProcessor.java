@@ -56,8 +56,6 @@ public class ZipRangeProcessor {
         // entry can be deleted for a new rage entry
         ListIterator<ZipRange> zipRangeListIterator = finalZipRange.listIterator();
 
-        // set a flag for new zip range to be added
-        Boolean isZipRangeModified = false;
         // iterate through each existing entry to process the new range entry for optimization
         while(zipRangeListIterator.hasNext()) {
             ZipRange currentZipRange = zipRangeListIterator.next();
@@ -67,38 +65,34 @@ public class ZipRangeProcessor {
                 // Case 1, the current range is in between the new range
                 // remove the existing range
                 zipRangeListIterator.remove();
-                // set flag for newInput range to be added to replace the removed range
-                isZipRangeModified = true;
+                // add newInput range to be added to replace the removed range
+                zipRangeListIterator.add(zipRangeInput);
             } else if (zipRangeInput.getBegZip() > currentZipRange.getEndZip() ||
                     zipRangeInput.getEndZip() < currentZipRange.getBegZip()){
                 // Case 2, the new range is either before or after existing range
                 // do not need to modify existing range
-                // just set flag to add new range
-                isZipRangeModified = true;
+                // add newInput range
+                zipRangeListIterator.add(zipRangeInput);
             } else if (zipRangeInput.getBegZip() < currentZipRange.getBegZip() &&
                     zipRangeInput.getEndZip() < currentZipRange.getEndZip()){
                 // Case 3, new range extends beginning range of current range
-                isZipRangeModified = true;
                 // modify input range to incorporate end zip code with current
                 zipRangeInput.setEndZip(currentZipRange.getEndZip());
                 // remove existing range to be updated with modified current range
                 zipRangeListIterator.remove();
+                // add newInput range to be added to replace the removed range
+                zipRangeListIterator.add(zipRangeInput);
             } else if (zipRangeInput.getBegZip() > currentZipRange.getBegZip() &&
                     zipRangeInput.getEndZip() > currentZipRange.getEndZip()){
                 // Case 4, new range extends ending range of current range
-                isZipRangeModified = true;
                 // modify input range to incorporate end zip code with current
                 zipRangeInput.setBegZip(currentZipRange.getBegZip());
                 // remove existing range to be updated with modified current range
                 zipRangeListIterator.remove();
+                // add newInput range to be added to replace the removed range
+                zipRangeListIterator.add(zipRangeInput);
             }
 
         }
-
-        // if range has been modified, add to list
-        if (isZipRangeModified) {
-            finalZipRange.add(zipRangeInput);
-        }
-
     }
 }
